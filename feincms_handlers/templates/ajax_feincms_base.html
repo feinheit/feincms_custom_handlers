@@ -1,0 +1,11 @@
+{% load feincms_tags feincms_page_tags %}
+<head>
+    {{ feincms_page.content.media.css }}
+</head>
+<body>
+    
+    <div id="content" data-id="{{ feincms_page.id }}" data-title="{% if feincms_page.page_title %}{{ feincms_page.page_title }}{% else %}{{ feincms_page.title }}{% endif %}">
+    {% feincms_render_region feincms_page "main" request %}<!-- ajax -->
+    </div>
+    {{ feincms_page.content.media.js }}
+</body>

@@ -1,0 +1,7 @@
+This module allows to include custom feincms handlers. Major use cases are ajax-responses that
+only return a small part of the page or mobile versions of the site.
+
+The module requires FeinCMS 1.5 or newer.
+It uses history.js (https://github.com/balupton/history.js) for client-side HTML history.
+
+Checkout this gist for ajaxifying your webiste: https://gist.github.com/854622
