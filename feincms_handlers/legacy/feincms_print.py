@@ -12,7 +12,6 @@ class PrintHandler(Handler):
     def __call__(self, request, path=None):
         if not request.GET.get('print', False):
             raise Http404
-        print('PRINT HANDLER')
         return self.build_response(request,
             Page.objects.best_match_for_path(path or request.path, raise404=True))
 
