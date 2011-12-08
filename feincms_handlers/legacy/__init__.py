@@ -3,6 +3,7 @@
 
 from django.http import Http404
 from feincms.utils import get_object
+from feincms_handlers import NotMyJob
 
 class MasterHandler(object):
     """ This is where you register your handlers. They will be called one after the
@@ -35,7 +36,7 @@ class MasterHandler(object):
         for handler in self.handlers:
             try:
                 return handler.__call__(request, path)
-            except Http404:
+            except (NotMyJob, Http404):
                 continue
 
         # No response until now:

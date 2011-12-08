@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from feincms.module.page.models import Page
 from feincms.views.base import Handler
+from feincms_handlers import NotMyJob
 
 class PrintHandler(Handler):
     """ This handler handles print previews.
@@ -11,7 +12,7 @@ class PrintHandler(Handler):
 
     def __call__(self, request, path=None):
         if not request.GET.get('print', False):
-            raise Http404
+            raise NotMyJob(self)
         return self.build_response(request,
             Page.objects.best_match_for_path(path or request.path, raise404=True))
 
