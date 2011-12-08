@@ -1,4 +1,19 @@
 """ This module is for FeinCMS < 1.5
+
+Usage Example:
+
+from feincms_handlers import legacy
+
+handler = legacy.MasterHandler(['feincms_handlers.legacy.page_id_fallback.handler',
+                  'feincms_handlers.legacy.feincms_print.handler',
+                  feincms_handler
+                ])
+
+urlpatterns += patterns('',
+    url(r'^$', handler, name='feincms_home'),
+    url(r'^(.*)/$', handler, name='feincms_handler'),
+)
+
 """
 
 from django.http import Http404
@@ -49,5 +64,3 @@ class MasterHandler(object):
         This property is used by django-debug-toolbar
         """
         return self.__class__.__name__
-
-handler = MasterHandler()
