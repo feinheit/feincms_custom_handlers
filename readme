@@ -1,7 +1,63 @@
 This module allows to include custom feincms handlers. Major use cases are ajax-responses that
 only return a small part of the page or mobile versions of the site.
 
-The module requires FeinCMS 1.5 or newer.
-It uses history.js (https://github.com/balupton/history.js) for client-side HTML history.
+There is a Legacy version for FeinCMS < 1.5. The main version is for FeinCMS >= 1.5
+
+Currently the following handlers are included:
+----------------------------------------------
+
+CBV Handlers:
++++++++++++++
+
+This module will be refactored soon to match the MasterHandler class found in the legacy module.
+
+Ajax
+----
+Allows to ajaxify a FeinCMS website. If a request is Ajax it renders tempates prefixed with 'ajax_'.
+
+The ajax handler uses history.js (https://github.com/balupton/history.js) for client-side HTML history.
 
 Checkout this gist for ajaxifying your webiste: https://gist.github.com/854622
+
+
+Legacy Handlers:
+++++++++++++++++
+
+FeinCMS Print
+-------------
+
+If the request has a GET parameter called 'print', it prefixes the base templates with 'print_'.
+
+
+Page ID fallback
+----------------
+
+If the request contains a GET parameter 'p' with a Page id it redirects to that page. This can be useful
+if you have to add static links to a FeinCMS page and want to make sure the page is reachable even if moved.
+
+
+
+Usage Example:
+--------------
+
+CBV Handler:
+++++++++++++
+
+urlpatterns += patterns('',
+    url(r'', include('feincms_handlers.urls')),
+)
+
+Legacy Handler:
++++++++++++++++
+
+from feincms_handlers import legacy
+
+handler = legacy.MasterHandler(['feincms_handlers.legacy.page_id_fallback.handler',
+                  'feincms_handlers.legacy.feincms_print.handler',
+                  feincms_handler
+                ])
+
+urlpatterns += patterns('',
+    url(r'^$', handler, name='feincms_home'),
+    url(r'^(.*)/$', handler, name='feincms_handler'),
+)
