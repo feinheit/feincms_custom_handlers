@@ -20,6 +20,13 @@ The ajax handler uses history.js (https://github.com/balupton/history.js) for cl
 Checkout this gist for ajaxifying your webiste: https://gist.github.com/854622
 
 
+Autolanguage
+------------
+Automatically redirect to the page in the user's language if available.
+Useful for Facebook tabs and places where a language nav cannot be used.
+Not recommended for general use.
+
+
 Legacy Handlers:
 ++++++++++++++++
 
