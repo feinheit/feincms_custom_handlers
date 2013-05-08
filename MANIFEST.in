@@ -1,0 +1,3 @@
+recursive-include feincms_handlers/templates *.html
+recursive-include feincms_handlers/static *
+include LICENCE
