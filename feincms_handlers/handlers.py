@@ -1,24 +1,14 @@
-""" This module is for FeinCMS < 1.5
-
-Usage Example:
-
-from feincms_handlers import legacy
-
-handler = legacy.MasterHandler(['feincms_handlers.legacy.page_id_fallback.handler',
-                  'feincms_handlers.legacy.feincms_print.handler',
-                  feincms_handler
-                ])
-
-urlpatterns += patterns('',
-    url(r'^$', handler, name='feincms_home'),
-    url(r'^(.*)/$', handler, name='feincms_handler'),
-)
-
-"""
-
 from django.http import Http404
 from feincms.utils import get_object
 from feincms_handlers import NotMyJob
+
+from .views.cbv.ajax import AjaxHandler
+from .views.cbv.autolanguage import AutoLanguageHandler
+from feincms.views.cbv.views import Handler as FeinCMSHandler
+
+__all__ = ['AjaxHandler', 'AutoLanguageHandler', 'FeinCMSHandler',
+           'MasterHandler']
+
 
 class MasterHandler(object):
     """ This is where you register your handlers. They will be called one after the
@@ -31,10 +21,9 @@ class MasterHandler(object):
             self.register(handlers)
 
     def _register_handler(self, handler):
-        handler = get_object(handler) # parse strings
-        if not hasattr(handler, '__call__'):
-            raise AttributeError('Handler %s has no method "__call__". Needs one.' % handler)
-        self.handlers.append(handler)
+        if not hasattr(handler, 'as_view'):
+            raise AttributeError('Handler %s has no method "as_view". Needs one.' % handler)
+        self.handlers.append(handler.as_view())
 
     def register(self, handlers):
         if isinstance(handlers, list):
@@ -51,7 +40,7 @@ class MasterHandler(object):
         for handler in self.handlers:
             try:
                 return handler.__call__(request, path)
-            except (NotMyJob, Http404):
+            except (NotMyJob, Http404) as e:
                 continue
 
         # No response until now:

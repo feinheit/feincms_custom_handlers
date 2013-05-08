@@ -1,12 +1,11 @@
 #coding=utf-8
-from django.conf.urls.defaults import patterns, include, url
+from django.conf.urls import patterns, include, url
 
-from feincms.views.cbv.views import Handler
-from views.cbv.ajax import AjaxHandler
-feincms_handler = Handler.as_view()
-ajax_handler = AjaxHandler.as_view()
+from feincms_handlers import handlers
+
+handler = handlers.MasterHandler([handlers.AjaxHandler, handlers.FeinCMSHandler])
 
 urlpatterns = patterns('',
-    url(r'^$', feincms_handler, name='feincms_home'),
-    url(r'^(.*)/$', ajax_handler, name='feincms_handler'),
+    url(r'^$', handlers.FeinCMSHandler.as_view(), name='feincms_home'),
+    url(r'^(.*)/$', handler, name='feincms_handler'),
 )
