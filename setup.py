@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name='feincms_custom_handlers',
-    version='0.2',
+    version='0.3',
     packages=['feincms_handlers', 'feincms_handlers.views',
               'feincms_handlers.views.cbv'],
     url='https://github.com/feinheit/feincms_custom_handlers',

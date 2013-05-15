@@ -9,15 +9,24 @@ Currently the following handlers are included:
 CBV Handlers:
 +++++++++++++
 
-This module will be refactored soon to match the MasterHandler class found in the legacy module.
-
 Ajax
 ----
-Allows to ajaxify a FeinCMS website. If a request is Ajax it renders tempates prefixed with 'ajax_'.
+Allows to ajaxify a FeinCMS website. If a request is Ajax it renders tempates prefixed with ``ajax_``.
 
-The ajax handler uses history.js (https://github.com/balupton/history.js) for client-side HTML history.
+The ajax handler can use history.js (https://github.com/browserstate/history.js) for client-side HTML history.
 
 Checkout this gist for ajaxifying your webiste: https://gist.github.com/854622
+
+
+HtmlSnapshot
+------------
+For making your Ajax-Site Google crawlable. According to this standard:
+https://developers.google.com/webmasters/ajax-crawling/docs/getting-started
+
+The handler will look for a template prefixed with ``snapshot_`` and add the
+``_escaped_fragment_`` part as an attribute ``escaped_fragment`` to the request.
+You can then render additional content within that template to show a flat
+representation of your ajax web site.
 
 
 Autolanguage
@@ -50,21 +59,44 @@ Usage Example:
 CBV Handler:
 ++++++++++++
 
-urlpatterns += patterns('',
-    url(r'', include('feincms_handlers.urls')),
-)
+By default, the FeinCMS and the Ajax handlers are active. You can add them like this::
+
+  urlpatterns += patterns('',
+      url(r'', include('feincms_handlers.urls')),
+  )
+
+To customize the configuration add this to your ``urls.py``::
+
+  from feincms_handlers import handlers
+
+  handler = handlers.MasterHandler([handlers.AjaxHandler,
+                                  handlers.HtmlSnapshotHandler,
+                                  handlers.FeinCMSHandler])
+
+  urlpatterns = patterns('',
+      url(r'^$', handlers.FeinCMSHandler.as_view(), name='feincms_home'),
+      url(r'^(.*)/$', handler, name='feincms_handler'),
+  )
+
+
+
+
+
+
 
 Legacy Handler:
 +++++++++++++++
+::
 
-from feincms_handlers import legacy
+  from feincms_handlers import legacy
 
-handler = legacy.MasterHandler(['feincms_handlers.legacy.page_id_fallback.handler',
-                  'feincms_handlers.legacy.feincms_print.handler',
-                  feincms_handler
-                ])
+  handler = legacy.MasterHandler(['feincms_handlers.legacy.page_id_fallback.handler',
+                    'feincms_handlers.legacy.feincms_print.handler',
+                    feincms_handler
+                  ])
 
-urlpatterns += patterns('',
-    url(r'^$', handler, name='feincms_home'),
-    url(r'^(.*)/$', handler, name='feincms_handler'),
-)
+  urlpatterns += patterns('',
+      url(r'^$', handler, name='feincms_home'),
+      url(r'^(.*)/$', handler, name='feincms_handler'),
+  )
+
