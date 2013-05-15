@@ -1,0 +1,6 @@
+{% extends 'feincms_base' %}
+
+{% block content %}
+{{ request.escaped_fragment }}
+{{ block.super }}
+{% endblock %}

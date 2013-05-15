@@ -1,13 +1,14 @@
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from feincms.utils import get_object
 from feincms_handlers import NotMyJob
 
 from .views.cbv.ajax import AjaxHandler
 from .views.cbv.autolanguage import AutoLanguageHandler
 from feincms.views.cbv.views import Handler as FeinCMSHandler
+from .views.cbv.htmlsnapshot import HtmlSnapshotHandler
 
 __all__ = ['AjaxHandler', 'AutoLanguageHandler', 'FeinCMSHandler',
-           'MasterHandler']
+           'HtmlSnapshotHandler', 'MasterHandler']
 
 
 class MasterHandler(object):
