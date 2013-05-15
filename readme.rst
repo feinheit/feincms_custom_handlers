@@ -73,7 +73,7 @@ To customize the configuration add this to your ``urls.py``::
                                   handlers.HtmlSnapshotHandler,
                                   handlers.FeinCMSHandler])
 
-  urlpatterns = patterns('',
+  urlpatterns += patterns('',
       url(r'^$', handlers.FeinCMSHandler.as_view(), name='feincms_home'),
       url(r'^(.*)/$', handler, name='feincms_handler'),
   )
