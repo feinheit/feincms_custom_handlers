@@ -4,7 +4,7 @@ from django.template import Template
 from django.utils.translation import get_language
 import urllib
 
-from feincms.views.cbv.views import Handler
+from feincms.views import Handler
 from feincms.module.page.models import Page
 
 class HtmlSnapshotHandler(Handler):

@@ -1,2 +1,3 @@
 *.pyc
 *.mo
+feincms_custom_handlers.egg-info/

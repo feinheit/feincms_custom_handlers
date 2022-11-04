@@ -4,7 +4,7 @@ from feincms_handlers import NotMyJob
 
 from .views.cbv.ajax import AjaxHandler
 from .views.cbv.autolanguage import AutoLanguageHandler
-from feincms.views.cbv.views import Handler as FeinCMSHandler
+from feincms.views import Handler as FeinCMSHandler
 from .views.cbv.htmlsnapshot import HtmlSnapshotHandler
 
 __all__ = ['AjaxHandler', 'AutoLanguageHandler', 'FeinCMSHandler',
@@ -20,6 +20,8 @@ class MasterHandler(object):
         self.handlers = []
         if handlers:
             self.register(handlers)
+
+        self.__qualname__ = "feincms_handlers.handlers.MasterHandler"
 
     def _register_handler(self, handler):
         if not hasattr(handler, 'as_view'):

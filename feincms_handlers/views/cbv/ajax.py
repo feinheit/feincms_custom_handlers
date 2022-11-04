@@ -2,7 +2,7 @@
 from feincms_handlers import NotMyJob
 from django.template import Template
 
-from feincms.views.cbv.views import Handler
+from feincms.views import Handler
 from feincms.module.page.models import Page
 
 class AjaxHandler(Handler):
@@ -14,7 +14,7 @@ class AjaxHandler(Handler):
             raise NotMyJob('ajax')
         else:
             return super(AjaxHandler, self).dispatch(request, *args, **kwargs)
- 
+
     def get_template_names(self):
         templates = super(AjaxHandler, self).get_template_names()
         if not isinstance(templates, list):

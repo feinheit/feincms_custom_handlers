@@ -1,7 +1,7 @@
 #coding=utf-8
 from django.http import HttpResponseRedirect
 from django.utils import translation
-from feincms.views.cbv.views import Handler
+from feincms.views import Handler
 from feincms.module.page.models import Page
 
 class AutoLanguageHandler(Handler):
