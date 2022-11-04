@@ -15,7 +15,7 @@
         });
         return $(this);
     };
-    
+
     $.fn.open = function(){
         log($(this));
         $(this).each(function(){
@@ -30,7 +30,7 @@
 
 
 (function(window,undefined){
-    
+
     // Prepare our Variables
     var
         History = window.History,
@@ -61,12 +61,12 @@
                 duration: 800,
                 easing:'swing'
             };
-        
+
         // Ensure Content
         if ( $content.length === 0 ) {
             $content = $body;
         }
-        
+
         // Internal Helper
         $.expr[':'].internal = function(obj, index, meta, stack){
             // Prepare
@@ -74,33 +74,33 @@
                 $this = $(obj),
                 url = $this.attr('href')||'',
                 isInternalLink;
-            
+
             // Check link
             isInternalLink = url.substring(0,rootUrl.length) === rootUrl || url.indexOf(':') === -1;
-            
+
             // Ignore or Keep
             return isInternalLink;
         };
-        
+
         // HTML Helper
         var documentHtml = function(html){
             // Prepare
-            
+
             var result = String(html)
                 .replace(/<\!DOCTYPE[^>]*>/i, '')
                 .replace(/<(html|head|body|title|meta|script)([\s\>])/gi,'<div class="document-$1"$2')
                 .replace(/<\/(html|head|body|title|meta|script)\>/gi,'</div>')
             ;
-            
+
             // Return
             return result;
         };
-        
+
         // Ajaxify Helper
         $.fn.ajaxify = function(){
             // Prepare
             var $this = $(this);
-            
+
             // Ajaxify
             $this.find('a:internal:not(.no-ajaxy)').click(function(event){
                 // Prepare
@@ -109,23 +109,23 @@
                     $this = $(this),
                     url = $this.attr('href'),
                     title = $this.attr('title')||null;
-                
+
                 // Continue as normal for cmd clicks etc
                 if ( event.which == 2 || event.metaKey ) { log('no-ajax'); return true; }
-                
+
                 // Ajaxify this link
                 History.pushState(null,title,url);
                 event.preventDefault();
                 return false;
             });
-            
+
             // Chain
             return $this;
         };
-        
+
         // Ajaxify our Internal Links
         $body.ajaxify();
-        
+
         // Hook into State Changes
         $(window).bind('statechange',function(){
             // Prepare Variables
@@ -141,7 +141,7 @@
             // Animating to opacity to 0 still keeps the element's height intact
             // Which prevents that annoying pop bang issue when loading in new content
             $content.animate({opacity:0},800);
-            
+
             // Ajax Request the Traditional Page
             $.ajax({
                 url: url,
@@ -153,13 +153,13 @@
                         $dataContent = $dataBody.find('#content'),
                         $dataId = $dataContent.data('id'),
                         $menuChildren, contentHtml, $scripts, $links;
-                    
+
                     // Fetch the scripts
                     $scripts = $dataBody.find('.document-script');
                     if ( $scripts.length ) {
                         $scripts.detach();
                     }
-                    
+
                     // Fetch the css
                     $links = $data.find('link');
                     if ( $links.length ) {
@@ -172,14 +172,14 @@
                         log('no content html. Redirecting...');
                         document.location.href = url;
                         return false;
-                    }                    
-                    
+                    }
+
                     // Update the menu
                     $menuChildren = $menu.find(menuChildrenSelector);
                     $menuChildren.filter(activeSelector).close(); //.removeClass(activeClass).change();
                     $menuChildren = $menuChildren.filter('[href^="/'+relativeUrl+'"]');
-                    if ( $menuChildren.length === 1 ) { 
-                        $menuChildren.open(); 
+                    if ( $menuChildren.length === 1 ) {
+                        $menuChildren.open();
                         }
 
                     // Update the content
@@ -193,25 +193,25 @@
                         document.getElementsByTagName('title')[0].innerHTML = document.title.replace('<','&lt;').replace('>','&gt;').replace(' & ',' &amp; ');
                     }
                     catch ( Exception ) { }
-                    
+
                     // Add the scripts
                     $scripts.each(function(){
                         var $script = $(this);
                         if ($script.attr('src')) {
                             $.getScript($script.attr('src'));
                         } else {
-                            var scriptText = $script.html(), 
+                            var scriptText = $script.html(),
                             scriptNode = document.createElement('script');
                             scriptNode.appendChild(document.createTextNode(scriptText));
                             contentNode.appendChild(scriptNode);
                         }
-                        
+
                     });
-                    
+
                     // Add the CSS
                     $links.each(function(){
                         var $link = $(this);
-                       
+
                         var cssLink = $('<link />');
                             cssLink.attr({
                             "rel": $link.attr('rel'),
@@ -220,11 +220,11 @@
                             });
                         $('head').append(cssLink);
                     });
-                    
+
                     // Complete the change
                     // if ( $body.ScrollTo||false ) { $body.ScrollTo(scrollOptions); } /* http://balupton.com/projects/jquery-scrollto */
                     $body.removeClass('loading');
-                        
+
                     // Inform Google Analytics of the change
                     if ( typeof window.pageTracker !== 'undefined' ) {
                         window.pageTracker._trackPageview(relativeUrl);
@@ -236,7 +236,7 @@
                         // ^ we use the full url here as that is what reinvigorate supports
                     }
 
-                    
+
                 },
                 error: function(jqXHR, textStatus, errorThrown){
                     document.location.href = url;

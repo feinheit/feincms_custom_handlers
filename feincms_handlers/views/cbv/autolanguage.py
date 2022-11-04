@@ -1,8 +1,8 @@
-#coding=utf-8
 from django.http import HttpResponseRedirect
 from django.utils import translation
-from feincms.views import Handler
 from feincms.module.page.models import Page
+from feincms.views import Handler
+
 
 class AutoLanguageHandler(Handler):
     """
@@ -20,8 +20,9 @@ class AutoLanguageHandler(Handler):
     """
 
     def handler(self, request, *args, **kwargs):
-        self.page = Page.objects.for_request(request, raise404=True,
-                                             best_match=True, setup=False)
+        self.page = Page.objects.for_request(
+            request, raise404=True, best_match=True, setup=False
+        )
 
         language = translation.get_language()
         if self.page.language[:2] != language[:2]:

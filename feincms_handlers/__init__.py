@@ -14,6 +14,7 @@ urlpatterns += patterns('',
 
 """
 
+
 class NotMyJob(Exception):
     def __init__(self, author):
         self.author = author

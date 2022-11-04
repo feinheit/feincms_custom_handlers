@@ -99,4 +99,3 @@ Legacy Handler:
       url(r'^$', handler, name='feincms_home'),
       url(r'^(.*)/$', handler, name='feincms_handler'),
   )
-

@@ -18,11 +18,13 @@ urlpatterns += patterns('',
 
 from django.http import Http404
 from feincms.utils import get_object
+
 from feincms_handlers import NotMyJob
 
-class MasterHandler(object):
-    """ This is where you register your handlers. They will be called one after the
-        other until one returns a response.
+
+class MasterHandler:
+    """This is where you register your handlers. They will be called one after the
+    other until one returns a response.
     """
 
     def __init__(self, handlers=None, *args, **kwargs):
@@ -31,9 +33,11 @@ class MasterHandler(object):
             self.register(handlers)
 
     def _register_handler(self, handler):
-        handler = get_object(handler) # parse strings
-        if not hasattr(handler, '__call__'):
-            raise AttributeError('Handler %s has no method "__call__". Needs one.' % handler)
+        handler = get_object(handler)  # parse strings
+        if not hasattr(handler, "__call__"):
+            raise AttributeError(
+                'Handler %s has no method "__call__". Needs one.' % handler
+            )
         self.handlers.append(handler)
 
     def register(self, handlers):
@@ -45,7 +49,6 @@ class MasterHandler(object):
 
     def unregister(self, handler):
         self.handlers.remove(handler)
-
 
     def __call__(self, request, path=None):
         for handler in self.handlers:

@@ -1,19 +1,25 @@
 from django.http import Http404, HttpResponse
 from feincms.utils import get_object
-from feincms_handlers import NotMyJob
-
-from .views.cbv.ajax import AjaxHandler
-from .views.cbv.autolanguage import AutoLanguageHandler
 from feincms.views import Handler as FeinCMSHandler
-from .views.cbv.htmlsnapshot import HtmlSnapshotHandler
 
-__all__ = ['AjaxHandler', 'AutoLanguageHandler', 'FeinCMSHandler',
-           'HtmlSnapshotHandler', 'MasterHandler']
+from feincms_handlers import NotMyJob
+from feincms_handlers.views.cbv.ajax import AjaxHandler
+from feincms_handlers.views.cbv.autolanguage import AutoLanguageHandler
+from feincms_handlers.views.cbv.htmlsnapshot import HtmlSnapshotHandler
 
 
-class MasterHandler(object):
-    """ This is where you register your handlers. They will be called one after the
-        other until one returns a response.
+__all__ = [
+    "AjaxHandler",
+    "AutoLanguageHandler",
+    "FeinCMSHandler",
+    "HtmlSnapshotHandler",
+    "MasterHandler",
+]
+
+
+class MasterHandler:
+    """This is where you register your handlers. They will be called one after the
+    other until one returns a response.
     """
 
     def __init__(self, handlers=None, *args, **kwargs):
@@ -24,8 +30,10 @@ class MasterHandler(object):
         self.__qualname__ = "feincms_handlers.handlers.MasterHandler"
 
     def _register_handler(self, handler):
-        if not hasattr(handler, 'as_view'):
-            raise AttributeError('Handler %s has no method "as_view". Needs one.' % handler)
+        if not hasattr(handler, "as_view"):
+            raise AttributeError(
+                'Handler %s has no method "as_view". Needs one.' % handler
+            )
         self.handlers.append(handler.as_view())
 
     def register(self, handlers):
@@ -37,7 +45,6 @@ class MasterHandler(object):
 
     def unregister(self, handler):
         self.handlers.remove(handler)
-
 
     def __call__(self, request, path=None):
         for handler in self.handlers:
